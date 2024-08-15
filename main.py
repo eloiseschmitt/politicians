@@ -1,6 +1,10 @@
-import pandas as pd
-import sqlite3
+"""
+First tests
+"""
 import datetime
+import sqlite3
+
+import pandas as pd
 
 # Connexion à SQLite et création de la base de données
 conn = sqlite3.connect('politicians.db')
@@ -18,6 +22,9 @@ CREATE TABLE IF NOT EXISTS Politician (
 
 
 class Politician:
+    """
+    Politician
+    """
     def __init__(self, first_name: str, last_name: str, birthdate: datetime.date):
         self.first_name = first_name
         self.last_name = last_name
@@ -25,9 +32,10 @@ class Politician:
 
 
 def retrieve_csv_data():
+    """Search for a csv file and create politician object"""
     csv_data = pd.read_csv(filepath_or_buffer="data_source/elus-deputes.csv", sep=";")
     politicians = []
-    for i, row in csv_data.iterrows():
+    for _, row in csv_data.iterrows():
         politician = Politician(first_name=row["Nom de l'élu"], last_name=row["Prénom de l'élu"],
                                 birthdate=row["Date de naissance"])
         politicians.append(politician)

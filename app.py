@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request
+"""
+App index
+"""
 import sqlite3
+
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 
-# Route principale pour afficher les données
 @app.route('/')
 def index():
-    # Récupérer le terme de recherche depuis la requête GET
+    """Index route"""
     search_term = request.args.get('search', '')
 
     # Connexion à la base de données SQLite
@@ -28,7 +31,6 @@ def index():
     # Fermer la connexion
     conn.close()
 
-    # Rendre le template HTML avec les données
     return render_template('index.html', politicians=politicians)
 
 
