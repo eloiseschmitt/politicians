@@ -5,6 +5,8 @@ import sqlite3
 
 from flask import Flask, render_template, request
 
+from main import retrieve_csv_data
+
 app = Flask(__name__)
 
 
@@ -16,6 +18,16 @@ def index():
     # Connexion à la base de données SQLite
     conn = sqlite3.connect('politicians.db')
     cursor = conn.cursor()
+    # Création de la table Politician
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Politician (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        birthdate DATE NOT NULL
+    )
+    ''')
+    retrieve_csv_data(conn, cursor)
 
     # Construire la requête SQL avec un filtre si un terme de recherche est fourni
     if search_term:

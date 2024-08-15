@@ -2,23 +2,8 @@
 First tests
 """
 import datetime
-import sqlite3
 
 import pandas as pd
-
-# Connexion à SQLite et création de la base de données
-conn = sqlite3.connect('politicians.db')
-cursor = conn.cursor()
-
-# Création de la table Politician
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS Politician (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    birthdate DATE NOT NULL
-)
-''')
 
 
 class Politician:
@@ -31,7 +16,7 @@ class Politician:
         self.birthdate = birthdate
 
 
-def retrieve_csv_data():
+def retrieve_csv_data(conn, cursor):
     """Search for a csv file and create politician object"""
     csv_data = pd.read_csv(filepath_or_buffer="data_source/elus-deputes.csv", sep=";")
     politicians = []
@@ -46,12 +31,3 @@ def retrieve_csv_data():
     # Valider (commit) les transactions
     conn.commit()
 
-    # Afficher le contenu de la table pour vérifier l'insertion
-    cursor.execute('SELECT * FROM Politician')
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
-
-
-if __name__ == '__main__':
-    retrieve_csv_data()
